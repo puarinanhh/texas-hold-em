@@ -1,0 +1,162 @@
+.betting-controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  z-index: 50;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+
+  button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  .btn-fold {
+    background: #ef4444;
+    color: #fff;
+
+    &:hover {
+      background: #dc2626;
+    }
+  }
+
+  .btn-check {
+    background: #3b82f6;
+    color: #fff;
+
+    &:hover {
+      background: #2563eb;
+    }
+  }
+
+  .btn-call {
+    background: #22c55e;
+    color: #fff;
+
+    &:hover {
+      background: #16a34a;
+    }
+  }
+
+  .btn-allin {
+    background: #ffd700;
+    color: #1a1a2e;
+
+    &:hover {
+      background: #ffed4a;
+    }
+  }
+}
+
+.raise-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 300px;
+}
+
+.raise-slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+
+  input[type="range"] {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #ffd700;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+}
+
+.raise-presets {
+  display: flex;
+  gap: 10px;
+
+  button {
+    flex: 1;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.raise-action {
+  display: flex;
+  gap: 10px;
+
+  input[type="number"] {
+    width: 100px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1rem;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+      border-color: #ffd700;
+    }
+  }
+
+  .btn-raise {
+    flex: 1;
+    padding: 10px 20px;
+    background: #f59e0b;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: #d97706;
+    }
+
+    &:disabled {
+      background: rgba(255, 255, 255, 0.2);
+      cursor: not-allowed;
+    }
+  }
+}

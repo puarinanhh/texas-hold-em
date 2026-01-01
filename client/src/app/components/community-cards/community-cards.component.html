@@ -1,0 +1,12 @@
+<div class="community-cards">
+  @for (card of cards; track $index) {
+    <div class="card" [class]="getCardColor(card)">
+      {{ getCardDisplay(card) }}
+    </div>
+  }
+
+  <!-- Placeholder cards for remaining slots -->
+  @for (i of [].constructor(5 - cards.length); track $index) {
+    <div class="card placeholder"></div>
+  }
+</div>

@@ -1,0 +1,51 @@
+<div
+  class="player-seat"
+  [class.current-player]="isCurrentPlayer"
+  [class.current-turn]="isCurrentTurn"
+  [class.folded]="player.isFolded"
+  [class.winner]="winner">
+
+  <!-- Position Badge -->
+  @if (positionLabel) {
+    <div class="position-badge" [class.dealer]="isDealer">
+      {{ positionLabel }}
+    </div>
+  }
+
+  <!-- Player Cards -->
+  <div class="cards">
+    @if (showCards && player.cards.length > 0) {
+      @for (card of player.cards; track $index) {
+        <div class="card" [class]="getCardColor(card)">
+          {{ getCardDisplay(card) }}
+        </div>
+      }
+    } @else if (player.cards.length > 0 || !player.isFolded) {
+      <div class="card back"></div>
+      <div class="card back"></div>
+    }
+  </div>
+
+  <!-- Player Info -->
+  <div class="player-info">
+    <div class="name">{{ player.name }}</div>
+    <div class="chips">{{ player.chips }}</div>
+    @if (player.currentBet > 0) {
+      <div class="current-bet">Bet: {{ player.currentBet }}</div>
+    }
+    @if (player.isAllIn) {
+      <div class="status all-in">ALL-IN</div>
+    }
+    @if (player.isFolded) {
+      <div class="status folded">FOLDED</div>
+    }
+  </div>
+
+  <!-- Winner Info -->
+  @if (winner) {
+    <div class="winner-badge">
+      <span class="hand">{{ winner.handResult.rankName }}</span>
+      <span class="amount">+{{ winner.winAmount }}</span>
+    </div>
+  }
+</div>

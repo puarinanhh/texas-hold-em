@@ -1,0 +1,46 @@
+<div class="betting-controls">
+  <div class="action-buttons">
+    <button class="btn-fold" (click)="fold()">Fold</button>
+
+    @if (canCheck) {
+      <button class="btn-check" (click)="check()">Check</button>
+    } @else if (canCall) {
+      <button class="btn-call" (click)="call()">
+        Call {{ callAmount }}
+      </button>
+    }
+
+    <button class="btn-allin" (click)="allIn()">
+      All-In ({{ playerChips }})
+    </button>
+  </div>
+
+  <div class="raise-section">
+    <div class="raise-slider">
+      <span>{{ minRaiseTotal }}</span>
+      <input
+        type="range"
+        [min]="minRaiseTotal"
+        [max]="maxRaise"
+        [(ngModel)]="raiseAmount"
+        [step]="minRaise">
+      <span>{{ maxRaise }}</span>
+    </div>
+
+    <div class="raise-presets">
+      <button (click)="setRaiseHalf()">1/2 Pot</button>
+      <button (click)="setRaisePot()">Pot</button>
+    </div>
+
+    <div class="raise-action">
+      <input
+        type="number"
+        [(ngModel)]="raiseAmount"
+        [min]="minRaiseTotal"
+        [max]="maxRaise">
+      <button class="btn-raise" (click)="raise()" [disabled]="raiseAmount < minRaiseTotal">
+        Raise to {{ raiseAmount }}
+      </button>
+    </div>
+  </div>
+</div>

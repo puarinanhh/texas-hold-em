@@ -1,0 +1,85 @@
+<div class="lobby-container">
+  <h1>Poker LAN</h1>
+
+  @if (!isConnected) {
+    <div class="connect-form">
+      <h2>Join Game</h2>
+      <div class="form-group">
+        <label>Your Name:</label>
+        <input type="text" [(ngModel)]="playerName" placeholder="Enter your name" (keyup.enter)="connect()">
+      </div>
+      <div class="form-group">
+        <label>Buy-in:</label>
+        <input type="number" [(ngModel)]="buyIn" min="100" step="100">
+      </div>
+      <button class="btn-primary" (click)="connect()">Connect</button>
+    </div>
+  } @else {
+    <div class="lobby-content">
+      <div class="player-info">
+        <span>Playing as: <strong>{{ playerName }}</strong></span>
+        <span>Buy-in: <strong>{{ buyIn }}</strong> chips</span>
+      </div>
+
+      <div class="room-actions">
+        <button class="btn-primary" (click)="showCreateRoom = !showCreateRoom">
+          {{ showCreateRoom ? 'Cancel' : 'Create Room' }}
+        </button>
+        <button class="btn-secondary" (click)="refreshRooms()">Refresh</button>
+      </div>
+
+      @if (showCreateRoom) {
+        <div class="create-room-form">
+          <h3>Create New Room</h3>
+          <div class="form-group">
+            <label>Room Name:</label>
+            <input type="text" [(ngModel)]="newRoomName" placeholder="My Poker Room">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Max Players:</label>
+              <select [(ngModel)]="newRoomMaxPlayers">
+                <option [value]="2">2</option>
+                <option [value]="4">4</option>
+                <option [value]="6">6</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Small Blind:</label>
+              <input type="number" [(ngModel)]="newRoomSmallBlind" min="1">
+            </div>
+            <div class="form-group">
+              <label>Big Blind:</label>
+              <input type="number" [(ngModel)]="newRoomBigBlind" min="2">
+            </div>
+          </div>
+          <button class="btn-primary" (click)="createRoom()">Create</button>
+        </div>
+      }
+
+      <div class="room-list">
+        <h3>Available Rooms</h3>
+        @if (rooms.length === 0) {
+          <p class="no-rooms">No rooms available. Create one!</p>
+        } @else {
+          @for (room of rooms; track room.id) {
+            <div class="room-card" [class.game-started]="room.isGameStarted">
+              <div class="room-info">
+                <h4>{{ room.name }}</h4>
+                <p>Players: {{ room.playerCount }}/{{ room.maxPlayers }}</p>
+                <p>Blinds: {{ room.smallBlind }}/{{ room.bigBlind }}</p>
+                <p class="status">{{ room.isGameStarted ? 'In Progress' : 'Waiting' }}</p>
+              </div>
+              <button
+                class="btn-join"
+                (click)="joinRoom(room.id)"
+                [disabled]="room.isGameStarted || room.playerCount >= room.maxPlayers">
+                {{ room.isGameStarted ? 'In Game' : room.playerCount >= room.maxPlayers ? 'Full' : 'Join' }}
+              </button>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+</div>

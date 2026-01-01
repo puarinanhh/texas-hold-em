@@ -1,0 +1,91 @@
+<div class="game-container">
+  <div class="header">
+    <div class="room-info">
+      <h2>{{ room?.name }}</h2>
+      <span class="blinds">Blinds: {{ room?.smallBlind }}/{{ room?.bigBlind }}</span>
+    </div>
+    <button class="btn-leave" (click)="leaveRoom()">Leave Room</button>
+  </div>
+
+  <div class="table-area">
+    <div class="poker-table">
+      <!-- Community Cards -->
+      <div class="community-area">
+        @if (gameState) {
+          <app-community-cards [cards]="gameState.communityCards"></app-community-cards>
+        }
+        <div class="pot">
+          Pot: {{ gameState?.pot || 0 }}
+        </div>
+      </div>
+
+      <!-- Player Seats -->
+      @for (position of [0, 1, 2, 3, 4, 5]; track position) {
+        @if (getPlayerAtSeat(position); as player) {
+          <div
+            class="seat"
+            [style.top]="seatPositions[position].top"
+            [style.left]="seatPositions[position].left">
+            <app-player-seat
+              [player]="player"
+              [isCurrentPlayer]="player.id === playerId"
+              [isDealer]="isDealer(player)"
+              [isSmallBlind]="isSmallBlind(player)"
+              [isBigBlind]="isBigBlind(player)"
+              [isCurrentTurn]="isCurrentTurn(player)"
+              [showCards]="player.id === playerId"
+              [winner]="getWinnerInfo(player.id)">
+            </app-player-seat>
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  <!-- Game Status -->
+  <div class="game-status">
+    @if (!gameState || gameState.phase === 'waiting') {
+      <div class="waiting-area">
+        <p>Waiting for players... ({{ room?.players?.length || 0 }}/{{ room?.maxPlayers || 6 }})</p>
+        @if (canStartGame) {
+          <button class="btn-start" (click)="startGame()">Start Game</button>
+        }
+      </div>
+    } @else {
+      <div class="phase-info">
+        <span class="phase">{{ gameState.phase | uppercase }}</span>
+        @if (isMyTurn) {
+          <span class="your-turn">Your Turn!</span>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Winners Banner (top-right corner) -->
+  @if (winners && winners.length > 0) {
+    <div class="winners-banner">
+      <div class="winners-content">
+        <h3>Winner{{ winners.length > 1 ? 's' : '' }}!</h3>
+        @for (winner of winners; track winner.playerId) {
+          <div class="winner-info">
+            <span class="winner-name">{{ winner.playerName }}</span>
+            <span class="winner-hand">{{ winner.handResult.rankName }}</span>
+            <span class="winner-amount">+{{ winner.winAmount }}</span>
+          </div>
+        }
+        <button class="btn-new-hand" (click)="newHand()">New Hand</button>
+      </div>
+    </div>
+  }
+
+  <!-- Betting Controls -->
+  @if (gameState && isMyTurn && !winners) {
+    <app-betting-controls
+      [currentBet]="gameState.currentBet"
+      [playerBet]="currentPlayer?.currentBet || 0"
+      [playerChips]="currentPlayer?.chips || 0"
+      [minRaise]="gameState.minRaise"
+      [pot]="gameState.pot">
+    </app-betting-controls>
+  }
+</div>
